@@ -5,6 +5,11 @@ def log_queries(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # YOUR CODE: log the query here
+        # Getting queries from the  args or kwargs
+        query = kwargs.get('query')
+        if query is None and args:
+            query = args.get[0]
+        print(f"Executing query: {query}")
         return func(*args, **kwargs)
     return wrapper
 
