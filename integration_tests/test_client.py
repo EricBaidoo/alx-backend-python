@@ -1,14 +1,16 @@
-
-#!/usr/bin/env python3
 """
 Unit tests for GithubOrgClient in client.py
 """
 
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
 import unittest
 from unittest.mock import patch, PropertyMock
 from parameterized import parameterized, parameterized_class
-from .client import GithubOrgClient
-from .fixtures import (
+from client import GithubOrgClient
+from fixtures import (
     org_payload, repos_payload, expected_repos, apache2_repos
 )
 @parameterized_class([
@@ -63,7 +65,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google",),
         ("abc",),
     ])
-    @patch("0x03-Unittests_and_integration_tests.client.get_json")
+    @patch("client.GithubOrgClient.get_json")
     def test_org(self, org, mock_get_json):
         """Test org property returns correct payload."""
         mock_get_json.return_value = {"login": org}
@@ -78,7 +80,7 @@ class TestGithubOrgClient(unittest.TestCase):
             client = GithubOrgClient("test")
             self.assertEqual(client._public_repos_url, "http://some_url")
 
-    @patch("0x03-Unittests_and_integration_tests.client.get_json")
+    @patch("client.GithubOrgClient.get_json")
     def test_public_repos(self, mock_get_json):
         """Test public_repos returns repo names and calls mocks once."""
         payload = [
