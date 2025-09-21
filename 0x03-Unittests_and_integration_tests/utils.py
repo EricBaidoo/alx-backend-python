@@ -21,13 +21,12 @@ def get_json(url: str) -> Any:
 
 def memoize(method: Callable) -> property:
     """
-    Decorator that caches a method's result as a property.
+    Decorator that turns a method into a memoized property.
     The method should take only 'self' as argument.
     """
-    attr_name = f"_{method.__name__}_memoized"
-    @property
     def wrapper(self):
+        attr_name = f"_{method.__name__}_memoized"
         if not hasattr(self, attr_name):
             setattr(self, attr_name, method(self))
         return getattr(self, attr_name)
-    return wrapper
+    return property(wrapper)
