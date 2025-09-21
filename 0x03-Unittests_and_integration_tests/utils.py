@@ -19,11 +19,15 @@ def get_json(url: str) -> Any:
     response = requests.get(url)
     return response.json()
 
-def memoize(method: Callable) -> Callable:
-    """Decorator to cache method results as properties."""
+def memoize(method: Callable) -> property:
+    """
+    Decorator that caches a method's result as a property.
+    The method should take only 'self' as argument.
+    """
     attr_name = f"_{method.__name__}_memoized"
+    @property
     def wrapper(self):
         if not hasattr(self, attr_name):
             setattr(self, attr_name, method(self))
         return getattr(self, attr_name)
-    return property(wrapper)
+    return wrapper
